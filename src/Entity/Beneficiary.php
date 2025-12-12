@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\BeneficiaryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
+#[ApiResource()]
 #[ORM\Entity(repositoryClass: BeneficiaryRepository::class)]
 class Beneficiary
 {
