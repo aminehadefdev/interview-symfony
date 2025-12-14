@@ -17,6 +17,7 @@ security:
 
         api:
             pattern:   ^/api
+            provider: database_users
             stateless: true
             jwt: ~
         dev:
@@ -25,9 +26,9 @@ security:
         docs:
             pattern: ^/api/docs
             security: false
-        main:
-            lazy: true
-            provider: database_users
+        #main:
+        #    lazy: true
+        #    provider: database_users
 
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }

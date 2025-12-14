@@ -6,3 +6,11 @@ lexik_jwt_authentication:
         check_path: /api/login_check
         username_path: email
         password_path: security.credentials.password
+    set_cookies:
+        BEARER:
+            lifetime: 3600
+            path: /
+            domain: localhost
+            secure: false        # true en prod (https)
+            httpOnly: true      # ⭐ IMPORTANT
+            samesite: lax
