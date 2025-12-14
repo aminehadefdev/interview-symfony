@@ -3,10 +3,29 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\BeneficiaryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource()]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+        new Post(validationContext: ['groups' => ['Default', 'beneficiary:create']]),
+        new Put(),
+        new Patch(),
+        new Delete(),
+    ],
+    normalizationContext: ['groups' => ['beneficiary:read']],
+    denormalizationContext: ['groups' => ['beneficiary:create', 'beneficiary:update']],
+    security: "is_granted('ROLE_ADMIN')"
+)]
 #[ORM\Entity(repositoryClass: BeneficiaryRepository::class)]
 class Beneficiary
 {
@@ -15,6 +34,7 @@ class Beneficiary
     #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
+    #[Groups(['beneficiary:read', 'beneficiary:create', 'beneficiary:update'])]
     #[ORM\Column(type: "string", length: 255)]
     private $name;
 
