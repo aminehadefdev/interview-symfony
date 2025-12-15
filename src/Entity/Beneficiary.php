@@ -38,6 +38,9 @@ class Beneficiary
     #[ORM\Column(type: "string", length: 255)]
     private $name;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $AvatarUrl = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +54,18 @@ class Beneficiary
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getAvatarUrl(): ?string
+    {
+        return $this->AvatarUrl;
+    }
+
+    public function setAvatarUrl(?string $AvatarUrl): static
+    {
+        $this->AvatarUrl = $AvatarUrl;
 
         return $this;
     }

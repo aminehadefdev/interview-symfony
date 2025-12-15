@@ -27,6 +27,8 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@dicebear/collection": "^9.2.4",
+        "@dicebear/core": "^9.2.4",
         "@headlessui/react": "^2.2.9"
     }
 }
