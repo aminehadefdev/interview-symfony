@@ -18,18 +18,17 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("https://localhost:8000/api/login_check", {
+            const response = await fetch("https://localhost:8000/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 credentials: "include", // ⭐ IMPORTANT
                 body: JSON.stringify({
-                    username: form.email,
+                    email: form.email,
                     password: form.password,
                 }),
             });
-
             if (!response.ok) {
                 throw new Error("Login failed");
             }
@@ -68,7 +67,6 @@ export default function Login() {
                     Save changes
                 </Button>
             </Field>
-
         </div>
     )
 }

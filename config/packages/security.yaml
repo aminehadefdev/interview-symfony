@@ -1,43 +1,50 @@
 security:
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    
     providers:
         database_users:
             entity: { class: App\Entity\User, property: email }
 
     firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        
+        docs:
+            pattern: ^/api/docs
+            security: false
         login:
             pattern: ^/api/login
             stateless: true
             provider: database_users
             json_login:
-                check_path: /api/login_check
+                check_path: /api/login
+                username_path: email
+                password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
         api:
-            pattern:   ^/api
+            pattern: ^/api
             provider: database_users
             stateless: true
             jwt: ~
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        docs:
-            pattern: ^/api/docs
-            security: false
-        #main:
-        #    lazy: true
-        #    provider: database_users
+        
 
     access_control:
+        # Routes publiques
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: PUBLIC_ACCESS }
+        #- { path: ^/api/logout, roles: PUBLIC_ACCESS }
+        #- { path: ^/api/docs, roles: PUBLIC_ACCESS }
+        # Permettre la création d'utilisateurs (optionnel, à commenter si vous ne voulez pas)
+        #- { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
+        # Toutes les autres routes API nécessitent une authentification
+        #- { path: ^/api, roles: PUBLIC_ACCESS }
 
 when@test:
     security:
         password_hashers:
-
             Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
                 algorithm: auto
                 cost: 4

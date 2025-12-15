@@ -1,5 +1,5 @@
 <?php
-// api/src/Entity/User.php
+// src/Entity/User.php
 
 namespace App\Entity;
 
@@ -17,47 +17,72 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
-        new GetCollection(),
-        new Get(),
-        new Post(processor: UserPasswordHasher::class, validationContext: ['groups' => ['Default', 'user:create']]),
-        new Put(processor: UserPasswordHasher::class),
-        new Patch(processor: UserPasswordHasher::class),
-        new Delete(),
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')"
+        ),
+        new Get(
+            security: "is_granted('ROLE_ADMIN') or object == user"
+        ),
+        new Get(
+            uriTemplate: '/me',
+            controller: \App\Controller\MeController::class,
+            read: false,
+            name: 'api_me'
+        ),
+        new Post(
+            processor: UserPasswordHasher::class,
+            validationContext: ['groups' => ['Default', 'user:create']],
+            security: "is_granted('PUBLIC_ACCESS')"  // Permet l'inscription
+        ),
+        new Put(
+            processor: UserPasswordHasher::class,
+            security: "is_granted('ROLE_ADMIN') or object == user"
+        ),
+        new Patch(
+            processor: UserPasswordHasher::class,
+            security: "is_granted('ROLE_ADMIN') or object == user"
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')"
+        ),
     ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
-    security: "is_granted('ROLE_ADMIN')"
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[Groups(['user:read'])]
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
+    #[Groups(['user:read', 'user:me'])]
     private ?int $id = null;
 
     #[Assert\NotBlank]
     #[Assert\Email]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups(['user:read', 'user:create', 'user:update', 'user:me'])]
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Ignore]
     private ?string $password = null;
 
-    #[Assert\NotBlank(groups: ['user:create'])]
-    #[Groups(['user:create', 'user:update'])]
+    // #[Assert\NotBlank(groups: ['user:create', 'user:me'])]
+    // #[Assert\Length(min: 6, groups: ['user:create', 'user:update'])]
+    // #[Groups(['user:create', 'user:update'])]
+    #[Ignore]
     private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'user:me'])]
     private array $roles = [];
 
     public function getId(): ?int
@@ -110,7 +135,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -135,12 +159,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
-     *
-     * Required until Symfony 8.0, where eraseCredentials() will be removed from the interface.
-     * No-op since plainPassword is cleared manually in the password processor.
      */
     public function eraseCredentials(): void
     {
-        // Intentionally left blank
+        // $this->plainPassword = null; // Géré par UserPasswordHasher
     }
 }
