@@ -19,7 +19,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
             security: "is_granted('ROLE_ADMIN')"
         ),
         new Get(security: "is_granted('ROLE_ADMIN')"),
-        new Post(validationContext: ['groups' => ['Default', 'beneficiary:create']]),
+        new Post(
+            validationContext: ['groups' => ['Default', 'beneficiary:create']],
+            uriTemplate: "/beneficiaries",
+            controller: \App\Controller\BeneficiaryPostController::class,
+            read: false,
+            name: 'api_create_beneficiary',
+            security: "is_granted('ROLE_ADMIN')"
+        ),
         new Put(security: "is_granted('ROLE_ADMIN')"),
         new Patch(security: "is_granted('ROLE_ADMIN')"),
         new Delete(security: "is_granted('ROLE_ADMIN')"),
