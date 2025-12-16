@@ -1,5 +1,8 @@
+import React from "react"
+
 import { useEffect, useState } from "react";
 import Login from "./Login";
+import Profil from "./Profil";
 
 export default function Home() {
     const [user, setUser] = useState(null);
@@ -19,7 +22,6 @@ export default function Home() {
                     setUser(null); // pas connecté
                     return;
                 }
-
                 const data = await response.json();
                 setUser(data); // met à jour l'état
             } catch (err) {
@@ -39,7 +41,7 @@ export default function Home() {
     // 🔹 rendu après la fin du chargement
     return (
         <div className="color-white">
-            {!user ? <Login onLogin={setUser} /> : <h1>Hello {user.email}</h1>}
+            {!user ? <Login onLogin={setUser} /> : <Profil user={user}></Profil>}
         </div>
     );
 }

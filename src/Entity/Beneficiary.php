@@ -37,7 +37,8 @@ class Beneficiary
     #[Groups(['beneficiary:read', 'beneficiary:create', 'beneficiary:update'])]
     #[ORM\Column(type: "string", length: 255)]
     private $name;
-
+    
+    #[Groups(['beneficiary:read', 'beneficiary:create', 'beneficiary:update'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $AvatarUrl = null;
 

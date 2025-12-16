@@ -17,7 +17,7 @@ class BeneficiaryFixtures extends Fixture implements FixtureGroupInterface
         $faker = Factory::create('fr_FR');
         for ($i = 0; $i < 100; $i++) {
             $name = $faker->name();
-            $Avatarurl = $startAvatarUrl . $name . $endAvatarurl;
+            $Avatarurl = str_replace(" ", "", $startAvatarUrl . $name . $endAvatarurl);
             $beneficiary = new Beneficiary();
             $beneficiary->setName($name)
                 ->setAvatarUrl($Avatarurl);
