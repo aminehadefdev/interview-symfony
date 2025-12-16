@@ -11,7 +11,7 @@ export default function Main() {
         //https://localhost:8000/api/beneficiaries?page=1
         const fetchBeneficiary = async () => {
             try {
-                const response = await fetch("https://localhost:8000/api/beneficiaries/random?limt=12", {
+                const response = await fetch("https://localhost:8000/api/beneficiaries/random/limit/15", {
                     method: 'GET',
                     headers: { "Content-Type": "application/json" },
                     credentials: "include", // ⭐ cookie HttpOnly
@@ -39,7 +39,7 @@ export default function Main() {
     // 🔹 rendu après la fin du chargement
     return (
         <div className="color-white grid grid-cols-5 gap-6 grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
-            {beneficiary.member.map(beneficiary=><Beneficiary beneficiary={beneficiary}></Beneficiary>)}
+            {beneficiary.map(beneficiary=><Beneficiary key={beneficiary.id} beneficiary={beneficiary}></Beneficiary>)}
         </div>
     );
 }

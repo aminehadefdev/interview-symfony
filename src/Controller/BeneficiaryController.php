@@ -15,6 +15,6 @@ class BeneficiaryController extends AbstractController
     {
         $repository = $em->getRepository(Beneficiary::class);
         $beneficiaries = $repository->findRandom($limit);
-        return $this->json(["beneficiaries" => $beneficiaries]);
+        return $this->json($beneficiaries);
     }
 }
