@@ -19,6 +19,15 @@ class BeneficiaryRepository extends ServiceEntityRepository
         parent::__construct($registry, Beneficiary::class);
     }
 
+    public function findRandom(int $limit = 12): array
+    {
+        return $this->createQueryBuilder('e')
+            ->orderBy('RAND()')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Beneficiary[] Returns an array of Beneficiary objects
     //  */

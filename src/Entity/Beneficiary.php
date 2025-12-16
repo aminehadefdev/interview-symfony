@@ -15,12 +15,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
-        new GetCollection(),
-        new Get(),
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')"
+        ),
+        new Get(security: "is_granted('ROLE_ADMIN')"),
         new Post(validationContext: ['groups' => ['Default', 'beneficiary:create']]),
-        new Put(),
-        new Patch(),
-        new Delete(),
+        new Put(security: "is_granted('ROLE_ADMIN')"),
+        new Patch(security: "is_granted('ROLE_ADMIN')"),
+        new Delete(security: "is_granted('ROLE_ADMIN')"),
+        new Get(
+            uriTemplate: '/beneficiaries/random/limit/{limit}',
+            controller: \App\Controller\BeneficiaryController::class,
+            read: false,
+            name: 'api_random_beneficiary',
+            security: "is_granted('ROLE_ADMIN')"
+        ),
     ],
     normalizationContext: ['groups' => ['beneficiary:read']],
     denormalizationContext: ['groups' => ['beneficiary:create', 'beneficiary:update']],
@@ -37,7 +46,7 @@ class Beneficiary
     #[Groups(['beneficiary:read', 'beneficiary:create', 'beneficiary:update'])]
     #[ORM\Column(type: "string", length: 255)]
     private $name;
-    
+
     #[Groups(['beneficiary:read', 'beneficiary:create', 'beneficiary:update'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $AvatarUrl = null;

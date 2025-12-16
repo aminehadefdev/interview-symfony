@@ -35,11 +35,8 @@ security:
     access_control:
         # Routes publiques
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        #- { path: ^/api/logout, roles: PUBLIC_ACCESS }
-        #- { path: ^/api/docs, roles: PUBLIC_ACCESS }
-        # Permettre la création d'utilisateurs (optionnel, à commenter si vous ne voulez pas)
-        #- { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
-        # Toutes les autres routes API nécessitent une authentification
+        - { path: ^/api/user, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/beneficiaries, roles: IS_AUTHENTICATED_FULLY }
         #- { path: ^/api, roles: PUBLIC_ACCESS }
 
 when@test:
