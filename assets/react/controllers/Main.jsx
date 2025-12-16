@@ -1,45 +1,54 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import Beneficiary from "./Beneficiary";
-
-
+import SearchBar from "./SearchBar";
 
 export default function Main() {
-    const [beneficiary, setBeneficiary] = useState()
-    const [loading, setLoading] = useState(true); // 🔹 nouvel état
+    const [beneficiaries, setBeneficiaries] = useState([]); // liste originale
+    const [filteredBeneficiaries, setFilteredBeneficiaries] = useState([]); // liste filtrée
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        //https://localhost:8000/api/beneficiaries?page=1
-        const fetchBeneficiary = async () => {
+        const fetchBeneficiaries = async () => {
             try {
                 const response = await fetch("https://localhost:8000/api/beneficiaries/random/limit/15", {
                     method: 'GET',
                     headers: { "Content-Type": "application/json" },
-                    credentials: "include", // ⭐ cookie HttpOnly
-                })
+                    credentials: "include",
+                });
                 if (!response.ok) {
-                    setBeneficiary(null); // pas connecté
+                    setBeneficiaries([]);
+                    setFilteredBeneficiaries([]);
                     return;
                 }
                 const data = await response.json();
-                setBeneficiary(data); // met à jour l'état
+                setBeneficiaries(data);
+                setFilteredBeneficiaries(data); // initialement, tout est affiché
             } catch (err) {
                 console.error(err);
-                setBeneficiary(null);
+                setBeneficiaries([]);
+                setFilteredBeneficiaries([]);
             } finally {
-                setLoading(false); // 🔹 on a fini de charger
+                setLoading(false);
             }
         }
-        fetchBeneficiary()
-    }, [])
+        fetchBeneficiaries();
+    }, []);
+
     if (loading) {
-        // 🔹 affichage pendant que la requête est en cours
         return <div className="color-white"><h1>Loading...</h1></div>;
     }
 
-    // 🔹 rendu après la fin du chargement
     return (
-        <div className="color-white grid grid-cols-5 gap-6 grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
-            {beneficiary.map(beneficiary=><Beneficiary key={beneficiary.id} beneficiary={beneficiary}></Beneficiary>)}
+        <div>
+            <SearchBar 
+                beneficiaries={beneficiaries} 
+                setFilteredBeneficiaries={setFilteredBeneficiaries} 
+            />
+            <div className="color-white grid grid-cols-5 gap-6 grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
+                {filteredBeneficiaries.map(b => (
+                    <Beneficiary key={b.id} beneficiary={b} />
+                ))}
+            </div>
         </div>
     );
 }

@@ -6,8 +6,8 @@ import Main from "./Main"
 export default function Profil({ user }) {
     return (
         <>
-            <Header user={user}></Header>
-            <Main></Main>
+            <Header user={user} />
+            <Main />
         </>
     )
 }
