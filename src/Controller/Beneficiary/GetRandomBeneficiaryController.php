@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Beneficiary;
 
 use App\Entity\Beneficiary;
 use Doctrine\ORM\EntityManagerInterface;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
-class BeneficiaryController extends AbstractController
+class GetRandomBeneficiaryController extends AbstractController
 {
     public function __invoke(EntityManagerInterface $em, int $limit = 12): JsonResponse
     {

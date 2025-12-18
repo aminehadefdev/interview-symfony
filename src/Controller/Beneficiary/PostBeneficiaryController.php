@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Beneficiary;
 
 use App\Entity\Beneficiary;
 use Doctrine\ORM\EntityManagerInterface;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Faker\Factory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class BeneficiaryPostController extends AbstractController
+class PostBeneficiaryController extends AbstractController
 {
     public function __invoke(Request $request, EntityManagerInterface $em): JsonResponse
     {
@@ -29,6 +29,6 @@ class BeneficiaryPostController extends AbstractController
         $em->persist($beneficiary);
         $em->flush();
 
-        return new JsonResponse(["message"=>"beneficiary created"], JsonResponse::HTTP_CREATED);
+        return $this->json(["message"=>"beneficiary created", "beneficiary" => $beneficiary], JsonResponse::HTTP_CREATED);
     }
 }

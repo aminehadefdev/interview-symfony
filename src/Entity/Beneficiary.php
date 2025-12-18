@@ -15,14 +15,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
-        new GetCollection(
+        new GetCollection(security: "is_granted('ROLE_ADMIN')"),
+        new Get(security: "is_granted('ROLE_ADMIN')"),
+        new Get(
+            uriTemplate: '/beneficiaries/random/{limit}',
+            controller: \App\Controller\Beneficiary\GetRandomBeneficiaryController::class,
+            read: false,
+            name: 'api_random_beneficiary',
             security: "is_granted('ROLE_ADMIN')"
         ),
-        new Get(security: "is_granted('ROLE_ADMIN')"),
         new Post(
             validationContext: ['groups' => ['Default', 'beneficiary:create']],
             uriTemplate: "/beneficiaries",
-            controller: \App\Controller\BeneficiaryPostController::class,
+            controller: \App\Controller\Beneficiary\PostBeneficiaryController::class,
             read: false,
             name: 'api_create_beneficiary',
             security: "is_granted('ROLE_ADMIN')"
@@ -30,13 +35,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Put(security: "is_granted('ROLE_ADMIN')"),
         new Patch(security: "is_granted('ROLE_ADMIN')"),
         new Delete(security: "is_granted('ROLE_ADMIN')"),
-        new Get(
-            uriTemplate: '/beneficiaries/random/limit/{limit}',
-            controller: \App\Controller\BeneficiaryController::class,
-            read: false,
-            name: 'api_random_beneficiary',
-            security: "is_granted('ROLE_ADMIN')"
-        ),
     ],
     normalizationContext: ['groups' => ['beneficiary:read']],
     denormalizationContext: ['groups' => ['beneficiary:create', 'beneficiary:update']],

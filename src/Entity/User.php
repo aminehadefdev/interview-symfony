@@ -22,14 +22,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
-        new GetCollection(
-            security: "is_granted('ROLE_ADMIN')"
-        ),
+        new GetCollection(security: "is_granted('ROLE_ADMIN')"),
+        new Get(security: "is_granted('ROLE_ADMIN') or object == user"),
         new Get(
-            security: "is_granted('ROLE_ADMIN') or object == user"
-        ),
-        new Get(
-            uriTemplate: '/me',
+            uriTemplate: 'user/me',
             controller: \App\Controller\MeController::class,
             read: false,
             name: 'api_me'
@@ -37,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(
             processor: UserPasswordHasher::class,
             validationContext: ['groups' => ['Default', 'user:create']],
-            security: "is_granted('PUBLIC_ACCESS')"  // Permet l'inscription
+            security: "is_granted('ROLE_ADMIN')"  // Permet l'inscription
         ),
         new Put(
             processor: UserPasswordHasher::class,

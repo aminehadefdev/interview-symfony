@@ -10,7 +10,7 @@ export default function Main() {
     useEffect(() => {
         const fetchBeneficiaries = async () => {
             try {
-                const response = await fetch("https://localhost:8000/api/beneficiaries/random/limit/15", {
+                const response = await fetch("https://localhost:8000/api/beneficiaries/random/15", {
                     method: 'GET',
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",

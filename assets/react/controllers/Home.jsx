@@ -12,7 +12,7 @@ export default function Home() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch('https://localhost:8000/api/me', {
+                const response = await fetch('https://localhost:8000/api/user/me', {
                     method: 'GET',
                     headers: { "Content-Type": "application/json" },
                     credentials: "include", // ⭐ cookie HttpOnly

@@ -32,7 +32,7 @@ export default function Login({ onLogin }) {
             }
 
             // 🔹 récupération de l'utilisateur après login
-            const meRes = await fetch("https://localhost:8000/api/me", {
+            const meRes = await fetch("https://localhost:8000/api/user/me", {
                 credentials: "include",
             });
             const user = await meRes.json();
