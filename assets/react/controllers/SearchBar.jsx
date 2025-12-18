@@ -1,18 +1,40 @@
 import { useState, useEffect } from "react";
 
-export default function SearchBar({ beneficiaries, setFilteredBeneficiaries }) {
+export default function SearchBar({ beneficiaries, setFilteredBeneficiaries, globalSearch }) {
     const [search, setSearch] = useState('');
+
+    const fetchBeneficiariesByName = async (search) => {
+        const beneficiariesCopy = [...beneficiaries]
+        const response = await fetch("https://localhost:8000/api/beneficiaries/name/" + search, {
+            method: 'GET',
+            headers: { "Content-Type": "application/ld+json" },
+            credentials: "include",
+        })
+        if (!response.ok){
+            setFilteredBeneficiaries(beneficiaries);
+            return
+        }
+        const data = await response.json();
+        if (search === '') {
+            setFilteredBeneficiaries(beneficiariesCopy)
+        }      
+        setFilteredBeneficiaries(data)
+    }
 
     useEffect(() => {
         if (search === '') {
             setFilteredBeneficiaries(beneficiaries); // tout afficher si input vide
         } else {
-            const filtered = beneficiaries.filter(b =>
-                b.name.toLowerCase().includes(search.toLowerCase())
-            );
-            setFilteredBeneficiaries(filtered);
+            if (!globalSearch) {
+                const filtered = beneficiaries.filter(b =>
+                    b.name.toLowerCase().includes(search.toLowerCase())
+                );
+                setFilteredBeneficiaries(filtered);
+            } else {
+                fetchBeneficiariesByName(search)
+            }
         }
-    }, [search, beneficiaries, setFilteredBeneficiaries]);
+    }, [search, beneficiaries, setFilteredBeneficiaries, globalSearch]);
 
     return (
         <div>

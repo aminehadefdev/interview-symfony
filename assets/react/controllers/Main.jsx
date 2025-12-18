@@ -40,9 +40,15 @@ export default function Main() {
 
     return (
         <div>
-            <SearchBar 
-                beneficiaries={beneficiaries} 
-                setFilteredBeneficiaries={setFilteredBeneficiaries} 
+            <SearchBar
+                beneficiaries={beneficiaries}
+                setFilteredBeneficiaries={setFilteredBeneficiaries}
+                globalSearch={false}
+            />
+            <SearchBar
+                beneficiaries={beneficiaries}
+                setFilteredBeneficiaries={setFilteredBeneficiaries}
+                globalSearch={true}
             />
             <div className="color-white grid grid-cols-5 gap-6 grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
                 {filteredBeneficiaries.map(b => (
