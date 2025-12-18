@@ -28,6 +28,15 @@ class BeneficiaryRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByName(string $name): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.name LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Beneficiary[] Returns an array of Beneficiary objects
     //  */

@@ -24,6 +24,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
             name: 'api_random_beneficiary',
             security: "is_granted('ROLE_ADMIN')"
         ),
+        new Get(
+            uriTemplate: '/beneficiaries/name/{name}',
+            controller: \App\Controller\Beneficiary\GetBeneficiaryByNameController::class,
+            read: false,
+            name: 'api_name_beneficiary',
+            security: "is_granted('ROLE_ADMIN')"
+        ),
         new Post(
             validationContext: ['groups' => ['Default', 'beneficiary:create']],
             uriTemplate: "/beneficiaries",
