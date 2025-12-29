@@ -1,4 +1,4 @@
-import React from "react"
+import fetchBeneficiary from "../utils/fetchBenificiary"
 
 
 export default function Header({ user }) {
@@ -6,13 +6,7 @@ export default function Header({ user }) {
         "name": "mehdi"
     }
     const handleClick = async () => {
-        const res = fetch("https://localhost:8000/api/beneficiaries", {
-            method: "POST",
-            headers: { "Content-Type": "application/ld+json" },
-            credentials: "include",
-            body: JSON.stringify(form),
-        })
-        console.log((await res).json);
+        fetchBeneficiary({method: "POST", headers: { "Content-Type": "application/ld+json" }, body: JSON.stringify(form)})
     }
     return (
         <header className="flex">

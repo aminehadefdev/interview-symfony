@@ -81,7 +81,7 @@ Encore
     //.autoProvidejQuery()
     .enablePostCssLoader()
     .configureDevServerOptions(options => {
-        options.host = 'localhost';
+        options.host = '127.0.0.1';
         options.port = 8000;         // <-- ici tu mets 8000
         options.hot = true;          // hot reloading
         options.allowedHosts = 'all'; // autorise l'accès depuis n'importe quel host
