@@ -35,7 +35,7 @@ export default function Beneficiary({ beneficiary, setBeneficiaries }) {
             </button>
             <img className="w-full" src={beneficiary.avatarUrl} alt="Sunset in the mountains" />
             <div className="px-6 py-4">
-                <a href={"https://localhost:8000/api/beneficiaries/" + beneficiary.id} ><p className="text-gray-700 text-base text-white">{beneficiary.name}</p></a>
+                <a href={"https://localhost:8000/api/beneficiaries/" + beneficiary.id} ><p className="text-white-700 text-base">{beneficiary.name}</p></a>
             </div>
         </div>
     )

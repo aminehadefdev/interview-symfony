@@ -5,10 +5,7 @@ export default function Header({ user }) {
     const form = {
         "name": "mehdi"
     }
-    const handleClick = () => {
-        f()
-    }
-    const f = async () => {
+    const handleClick = async () => {
         const res = fetch("https://localhost:8000/api/beneficiaries", {
             method: "POST",
             headers: { "Content-Type": "application/ld+json" },
@@ -16,7 +13,6 @@ export default function Header({ user }) {
             body: JSON.stringify(form),
         })
         console.log((await res).json);
-        
     }
     return (
         <header className="flex">
