@@ -80,6 +80,19 @@ Encore
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
     .enablePostCssLoader()
+    .configureDevServerOptions(options => {
+        options.host = 'localhost';
+        options.port = 8000;         // <-- ici tu mets 8000
+        options.hot = true;          // hot reloading
+        options.allowedHosts = 'all'; // autorise l'accès depuis n'importe quel host
+        options.headers = { 'Access-Control-Allow-Origin': '*' }; // pour éviter le 403
+    })
+    .configureWatchOptions(function (watchOptions) {
+        // enable polling and check for changes every 250ms
+        // polling is useful when running Encore inside a Virtual Machine        
+        watchOptions.poll = 250;
+        watchOptions.ignored = /node_modules/;
+    });
 ;
 
 module.exports = Encore.getWebpackConfig();
