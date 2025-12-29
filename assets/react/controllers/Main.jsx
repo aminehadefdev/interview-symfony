@@ -44,7 +44,7 @@ export default function Main() {
                 beneficiaries={beneficiaries} 
                 setFilteredBeneficiaries={setFilteredBeneficiaries} 
             />
-            <div className="color-white grid grid-cols-5 gap-6 grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
+            <div className="color-white grid gap-6 grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
                 {filteredBeneficiaries.map(b => (
                     <Beneficiary key={b.id} beneficiary={b} />
                 ))}
