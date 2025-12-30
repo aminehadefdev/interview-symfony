@@ -10,10 +10,9 @@ export default function Header({ user }) {
     //     fetchBeneficiary({method: "POST", headers: { "Content-Type": "application/ld+json" }, body: JSON.stringify(form)})
     // }
     return (
-        <header className="flex">
-            <p className="text-white">{user.email}</p>
+        <header className="flex justify-between align-middle">
+            <p className="text-white px-4 py-2">{user.email}</p>
             <Modal></Modal>
-
         </header>
     )
 }

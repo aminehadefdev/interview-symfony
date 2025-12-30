@@ -73,10 +73,10 @@ export default function Login({ onLogin }) {
                 />
             </Field>
             {error && <p className="text-red-500 mt-2">{error}</p>} {/* 🔹 message d'erreur */}
-            <Field>
+            <Field className="flex px-4">
                 <Button
                     onClick={handleSubmit}
-                    className="rounded bg-sky-600 px-4 py-2 text-sm text-white data-active:bg-sky-700 data-hover:bg-sky-500 mt-5">
+                    className="inline-flex items-center gap-2 rounded-md bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:not-data-focus:outline-none data-focus:outline data-focus:outline-white data-hover:bg-gray-600 data-open:bg-gray-700 ml-auto mt-4">
                     login
                 </Button>
             </Field>

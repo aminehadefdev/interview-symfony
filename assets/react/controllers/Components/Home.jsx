@@ -40,8 +40,13 @@ export default function Home() {
 
     // 🔹 rendu après la fin du chargement
     return (
-        <div className="color-white">
-            {!user ? <Login onLogin={setUser} /> : <Profil user={user}></Profil>}
-        </div>
+        
+            !user ? 
+                <div className="color-white flex items-center justify-center h-screen">
+                    <Login onLogin={setUser} />
+                </div>:
+                <div className="color-white">
+                    <Profil user={user}></Profil>
+                </div>
     );
 }
